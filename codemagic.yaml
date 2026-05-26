@@ -1,10 +1,16 @@
 workflows:
   android-workflow:
     name: Android Build
+
     environment:
       java: 17
+
     scripts:
+      - name: Clean project
+        script: ./gradlew clean
+
       - name: Build APK
         script: ./gradlew assembleRelease
+
     artifacts:
-      - app/build/outputs/apk/release/*.apk
+      - "**/outputs/**/*.apk"
