@@ -1,35 +1,23 @@
 workflows:
   android-release:
-    name: RiMusic Android Release
-
-    max_build_duration: 60
+    name: Android Release Build
 
     environment:
       java: 17
 
-    cache:
-      cache_paths:
-        - ~/.gradle/caches
-        - ~/.gradle/wrapper
-
     scripts:
-      - name: Grant Gradle Permission
-        script: chmod +x ./gradlew
+      - chmod +x ./gradlew
+      - ./gradlew clean
+      - ./gradlew assembleRelease
 
-      - name: Clean Project
-        script: ./gradlew clean
+      - name: Find APK Files
+        script: |
+          echo "Searching APK..."
+          find . -name "*.apk"
 
-      - name: Build Release APK
-        script: ./gradlew assembleRelease
-
-      - name: Build Release Bundle
-        script: ./gradlew bundleRelease
+          echo "Searching AAB..."
+          find . -name "*.aab"
 
     artifacts:
-      - app/build/outputs/**/*.apk
-      - app/build/outputs/**/*.aab
-
-    publishing:
-      email:
-        recipients:
-          - your@email.com
+      - "**/*.apk"
+      - "**/*.aab"
