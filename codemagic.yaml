@@ -1,21 +1,15 @@
 workflows:
-  android-workflow:
-    name: Android Build
-
+  android-release:
+    name: Android Release Build
+    max_build_duration: 60
     environment:
-      java: 21
-
+      java: 17
     scripts:
-      - name: Clean
+      - name: Set up dependencies
         script: ./gradlew clean
 
       - name: Build APK
-        script: |
-          ./gradlew assembleRelease \
-          --no-daemon \
-          --stacktrace
+        script: ./gradlew assembleRelease
 
     artifacts:
-      - "**/*.apk"
-
-    max_build_duration: 120
+      - app/build/outputs/apk/release/*.apk
